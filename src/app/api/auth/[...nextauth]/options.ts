@@ -8,7 +8,7 @@ export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       id: "credentials",
-      name: "Credentials",
+      name: "Email",
       credentials: {
         email: {
           label: "Email",
@@ -19,6 +19,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials: any): Promise<any> {
         const { email, password } = credentials;
+        console.log(credentials);
 
         // connect database
         await connectDB();

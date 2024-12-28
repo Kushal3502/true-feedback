@@ -39,8 +39,8 @@ const UserSchema: Schema<User> = new mongoose.Schema({
     trim: true,
     unique: true,
     match: [
-      /^[a-zA-Z0-9]{5,20}$/,
-      "Username must be 5-20 characters long and can only contain letters and numbers",
+      /^[a-zA-Z0-9]/,
+      "Username must be 2-20 characters long and can only contain letters and numbers",
     ],
   },
   email: {

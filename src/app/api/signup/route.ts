@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    //   find user with email
+    // find user with email
     const isUserAlreadyExistsWithEmail = await UserModel.findOne({ email });
 
     const verificationCode = String(
