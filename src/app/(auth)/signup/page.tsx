@@ -185,7 +185,7 @@ function Signup() {
             href="/signin"
             className=" text-indigo-400 hover:text-indigo-300 font-semibold"
           >
-            Log in
+            Signin
           </a>
         </div>
       </div>
