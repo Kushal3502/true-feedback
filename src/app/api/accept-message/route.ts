@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
   try {
     const updatedUser = await UserModel.findByIdAndUpdate(
       user._id,
-      { acceptMessage: acceptMessage },
+      { isAcceptingMessage: acceptMessage },
       { new: true }
     );
 
