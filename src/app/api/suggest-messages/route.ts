@@ -9,7 +9,7 @@ const google = createGoogleGenerativeAI({
 export async function POST(req: Request) {
   try {
     const prompt =
-      "Create a list of three open-ended and engaging questions formatted as a single string. Each question should be separated by '||'. These questions are for an anonymous social messaging platform, like Qooh.me, and should be suitable for a diverse audience. Avoid personal or sensitive topics, focusing instead on universal themes that encourage friendly interaction. For example, your output should be structured like this: 'What’s a hobby you’ve recently started?||If you could have dinner with any historical figure, who would it be?||What’s a simple thing that makes you happy?'. Ensure the questions are intriguing, foster curiosity, and contribute to a positive and welcoming conversational environment.";
+      "Create a string containing three open-ended, engaging questions for an anonymous social messaging platform, such as Qooh.me. Each question should be separated by '||'. The questions should be inclusive, avoid sensitive or overly personal topics, and focus on universal themes that encourage friendly and positive interaction. Aim for intriguing prompts that foster curiosity and meaningful conversations. For example: 'What’s a hobby you’ve recently started?||If you could have dinner with any historical figure, who would it be?||What’s a simple thing that makes you happy?'. Make sure the tone is welcoming and the topics resonate with a diverse audience.";
 
     const { text } = await generateText({
       model: google("gemini-1.5-flash"),
@@ -17,10 +17,9 @@ export async function POST(req: Request) {
       prompt,
     });
 
-    return NextResponse.json(
-      { success: true, questions: text },
-      { status: 200 }
-    );
+    const questions = text.replace("\n", "").split("||");
+
+    return NextResponse.json({ success: true, questions }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { success: false, error: "Failed to generate questions" },

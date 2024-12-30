@@ -166,7 +166,7 @@ function Signup() {
             <Button
               type="submit"
               className="w-full py-2 px-4 font-semibold rounded-md transition duration-200"
-              disabled={form.formState.isSubmitting}
+              disabled={!form.formState.isValid || form.formState.isSubmitting}
             >
               {form.formState.isSubmitting ? (
                 <>
