@@ -11,12 +11,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { acceptMessageSchemaValidation } from "@/schemas/acceptMessageSchema";
+import { Message } from "@/model/User.model";
+import MessageCard from "@/components/MessageCard";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 function Dashboard() {
   const { data: session } = useSession();
   const { toast } = useToast();
 
   const [copied, setCopied] = useState(false);
+  const [messages, setMessages] = useState<Message[]>();
   const [isSwitchLoading, setIsSwitchLoading] = useState(false);
 
   const { register, watch, setValue } = useForm<
@@ -30,7 +40,6 @@ function Dashboard() {
   const shareUrl = `${window.location.origin}/u/${session?.user.username}`;
 
   async function fetchAcceptMessageStatus() {
-    setIsSwitchLoading(true);
     try {
       const response = await axios.get("/api/accept-message");
       console.log(response);
@@ -41,8 +50,6 @@ function Dashboard() {
         description: "Something went wrong",
         variant: "destructive",
       });
-    } finally {
-      setIsSwitchLoading(false);
     }
   }
 
@@ -64,6 +71,23 @@ function Dashboard() {
     }
   }
 
+  async function fetchMessages() {
+    setIsSwitchLoading(true);
+    try {
+      const response = await axios.get("/api/get-messages");
+      console.log(response);
+
+      setMessages(response.data.data || []);
+    } catch (error) {
+      toast({
+        description: "Something went wrong",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSwitchLoading(false);
+    }
+  }
+
   function handleCopyToClipboard() {
     navigator.clipboard.writeText(shareUrl).then(() => {
       setCopied(true);
@@ -73,32 +97,49 @@ function Dashboard() {
 
   useEffect(() => {
     fetchAcceptMessageStatus();
+    fetchMessages();
   }, []);
 
   return (
-    <div>
-      <h1>User Dashboard</h1>
-      <div>
-        <h2>Copy your unique link</h2>
-        <div className=" flex ">
-          <Input type="text" disabled value={shareUrl} />
-          <Button onClick={handleCopyToClipboard} disabled={copied}>
+    <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <h1 className="text-3xl font-bold mb-8">User Dashboard</h1>
+      <Card className=" shadow-md my-6">
+        <CardHeader>
+          <CardTitle>Share your unique link</CardTitle>
+        </CardHeader>
+        <CardContent className=" flex gap-3">
+          <Input type="text" disabled value={shareUrl} className="flex-1" />
+          <Button
+            onClick={handleCopyToClipboard}
+            disabled={copied}
+            className="min-w-[100px]"
+          >
             {copied ? "Copied!" : "Copy"}
           </Button>
-        </div>
-        <div className=" flex items-center gap-2">
+        </CardContent>
+        <CardFooter>
           <Switch
             {...register("accepting")}
             checked={acceptMessages}
             onCheckedChange={toggleAcceptMessage}
             disabled={isSwitchLoading}
           />
-          <span className="ml-2">
+          <span className="ml-2 text-sm font-medium">
             Accept Messages: {acceptMessages ? "On" : "Off"}
           </span>
-        </div>
-      </div>
-      <div></div>
+        </CardFooter>
+      </Card>
+      <Card className="shadow-md">
+        <CardHeader>
+          <CardTitle>Messages</CardTitle>
+        </CardHeader>
+        <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {messages &&
+            messages.map((item) => (
+              <MessageCard message={item} key={item._id} />
+            ))}
+        </CardContent>
+      </Card>
     </div>
   );
 }
