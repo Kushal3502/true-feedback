@@ -1,0 +1,36 @@
+[
+  {
+    "id": 1,
+    "message": "If you could swap lives with a fictional character for a day, who would it be?"
+  },
+  {
+    "id": 2,
+    "message": "If you could learn a new skill instantly, what would it be?"
+  },
+  {
+    "id": 3,
+    "message": "What’s a food you could eat every day and never get tired of?"
+  },
+  {
+    "id": 4,
+    "message": "What’s one small thing that always makes your day better?"
+  },
+  { "id": 5, "message": "What’s the most exciting place you’ve ever visited?" },
+  { "id": 6, "message": "What’s a goal you’re working on right now?" },
+  {
+    "id": 7,
+    "message": "What’s a food you could eat every day and never get tired of?"
+  },
+  {
+    "id": 8,
+    "message": "If you could swap lives with a fictional character for a day, who would it be?"
+  },
+  {
+    "id": 9,
+    "message": "What’s the most interesting book or movie you’ve encountered recently?"
+  },
+  {
+    "id": 10,
+    "message": "What’s a food you could eat every day and never get tired of?"
+  }
+]

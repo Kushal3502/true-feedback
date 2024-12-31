@@ -20,6 +20,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { RefreshCcw } from "lucide-react";
 
 function Dashboard() {
   const { data: session } = useSession();
@@ -88,6 +89,10 @@ function Dashboard() {
     }
   }
 
+  function handleMessaggeDelete(messageId: string) {
+    setMessages(messages?.filter((message) => message._id !== messageId));
+  }
+
   function handleCopyToClipboard() {
     navigator.clipboard.writeText(shareUrl).then(() => {
       setCopied(true);
@@ -131,12 +136,22 @@ function Dashboard() {
       </Card>
       <Card className="shadow-md">
         <CardHeader>
-          <CardTitle>Messages</CardTitle>
+          <CardTitle className=" flex justify-between items-center">
+            <h3>Messages</h3>
+            <Button size="icon" onClick={() => fetchMessages()}>
+              <RefreshCcw className={isSwitchLoading ? "animate-spin" : ""} />
+            </Button>
+          </CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {messages &&
             messages.map((item) => (
-              <MessageCard message={item} key={item._id} />
+              <MessageCard
+                message={item}
+                // @ts-ignore
+                key={item._id}
+                onMessageDelete={handleMessaggeDelete}
+              />
             ))}
         </CardContent>
       </Card>
