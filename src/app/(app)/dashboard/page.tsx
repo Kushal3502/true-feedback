@@ -30,6 +30,7 @@ function Dashboard() {
   const [copied, setCopied] = useState(false);
   const [messages, setMessages] = useState<Message[]>();
   const [isSwitchLoading, setIsSwitchLoading] = useState(false);
+  const [shareUrl, setShareUrl] = useState<string>("");
 
   const { register, watch, setValue } = useForm<
     z.infer<typeof acceptMessageSchemaValidation>
@@ -38,8 +39,6 @@ function Dashboard() {
   });
 
   const acceptMessages = watch("accepting");
-
-  const shareUrl = `${window.location.origin}/u/${session?.user.username}`;
 
   async function fetchAcceptMessageStatus() {
     try {
@@ -108,6 +107,7 @@ function Dashboard() {
   }
 
   useEffect(() => {
+    setShareUrl(`${window.location.origin}/u/${session?.user.username}`);
     fetchAcceptMessageStatus();
     fetchMessages();
   }, []);

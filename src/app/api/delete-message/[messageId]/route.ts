@@ -4,14 +4,17 @@ import { connectDB } from "@/lib/db";
 import UserModel from "@/model/User.model";
 import { authOptions } from "../../auth/[...nextauth]/options";
 
-export async function DELETE(
-  request: NextRequest,
-  context: { params: { messageId: string } }
-) {
+type Props = {
+  params: Promise<{
+    messageId: string;
+  }>;
+};
+
+export async function DELETE(request: NextRequest, { params }: Props) {
   await connectDB();
 
   // Extract `messageId` from the URL
-  const { messageId } = context.params;
+  const { messageId } = await params;
   console.log(messageId);
 
   // Validate `messageId`
