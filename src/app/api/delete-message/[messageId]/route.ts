@@ -6,12 +6,13 @@ import { authOptions } from "../../auth/[...nextauth]/options";
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { messageId: string } }
+  context: { params: { messageId: string } }
 ) {
   await connectDB();
 
   // Extract `messageId` from the URL
-  const { messageId } = params;
+  const { messageId } = context.params;
+  console.log(messageId);
 
   // Validate `messageId`
   if (!messageId) {
