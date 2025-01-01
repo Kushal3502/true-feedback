@@ -10,7 +10,22 @@ export async function DELETE(
 ) {
   await connectDB();
 
+  // Extract `messageId` from the URL
   const { messageId } = params;
+
+  // Validate `messageId`
+  if (!messageId) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Message ID is required",
+      },
+      {
+        status: 400,
+      }
+    );
+  }
+
   // get session
   const session = await getServerSession(authOptions);
 
