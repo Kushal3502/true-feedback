@@ -152,10 +152,10 @@ function Dashboard() {
         </CardHeader>
         <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {messages &&
-            messages.map((item: any) => (
+            messages.map((item, index) => (
               <MessageCard
                 message={item}
-                key={item._id}
+                key={index}
                 onMessageDelete={handleMessaggeDelete}
               />
             ))}
