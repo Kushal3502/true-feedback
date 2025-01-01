@@ -24,7 +24,7 @@ export async function connectDB(): Promise<void> {
 
     console.log("DB connected successfully");
   } catch (error) {
-    console.log("DB connection failed");
+    console.log("DB connection failed", error);
     process.exit(1);
   }
 }

@@ -85,8 +85,10 @@ function Dashboard() {
 
       setMessages(response.data.data || []);
     } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
       toast({
-        description: "Something went wrong",
+        description:
+          axiosError.response?.data.message ?? "Something went wrong",
         variant: "destructive",
       });
     } finally {
@@ -150,10 +152,9 @@ function Dashboard() {
         </CardHeader>
         <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {messages &&
-            messages.map((item) => (
+            messages.map((item: any) => (
               <MessageCard
                 message={item}
-                // @ts-ignore
                 key={item._id}
                 onMessageDelete={handleMessaggeDelete}
               />
