@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="container flex flex-col items-center justify-center gap-12 py-16">
+    <div className="h-full flex flex-col items-center justify-center gap-12 py-16">
       <div className="text-center space-y-6">
         <h1 className="text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-6">
           Dive into the World of Anonymous Feedback

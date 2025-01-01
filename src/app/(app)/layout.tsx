@@ -6,7 +6,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <div className="flex flex-col">
+    <div className=" h-screen flex flex-col">
       <Navbar />
       {children}
     </div>
