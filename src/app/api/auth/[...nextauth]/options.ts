@@ -9,6 +9,15 @@ interface Credentials {
   password: string;
 }
 
+interface User {
+  id: string;
+  email: string;
+  password: string;
+  isVerified: boolean;
+  isAcceptingMessage?: boolean;
+  username?: string;
+}
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -22,7 +31,9 @@ export const authOptions: NextAuthOptions = {
         },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials: Credentials | undefined): Promise<any> {
+      async authorize(
+        credentials: Credentials | undefined
+      ): Promise<User | null> {
         if (!credentials) {
           throw new Error("Credentials not provided");
         }
@@ -30,9 +41,9 @@ export const authOptions: NextAuthOptions = {
         // connect database
         await connectDB();
         try {
-          const user = await UserModel.findOne({
+          const user = (await UserModel.findOne({
             email: credentials.email,
-          });
+          })) as User;
 
           if (!user) throw new Error("User doesn't exist");
 
