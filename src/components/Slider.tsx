@@ -5,7 +5,7 @@ import messages from "@/messages.json";
 const firstRow = messages.slice(0, messages.length / 2);
 const secondRow = messages.slice(messages.length / 2);
 
-const ReviewCard = ({ id, message }: { id: number; message: string }) => {
+const ReviewCard = ({ message }: { message: string }) => {
   return (
     <figure
       className={cn(

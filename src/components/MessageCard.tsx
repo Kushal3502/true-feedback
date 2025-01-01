@@ -1,16 +1,9 @@
 import { Message } from "@/model/User.model";
 import React from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "./ui/button";
 import { Trash2 } from "lucide-react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useToast } from "@/hooks/use-toast";
 import {
   AlertDialog,
@@ -23,6 +16,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { ApiResponse } from "@/types/ApiResponse";
 
 function MessageCard({
   message,
@@ -43,8 +37,12 @@ function MessageCard({
       });
       onMessageDelete(message._id as string);
     } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
+
       toast({
-        description: "Failed to delete message",
+        description:
+          axiosError.response?.data.message ??
+          "Something went wrong. Try again!",
         variant: "destructive",
       });
     }

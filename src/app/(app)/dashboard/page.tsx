@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,6 +21,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { RefreshCcw } from "lucide-react";
+import { ApiResponse } from "@/types/ApiResponse";
 
 function Dashboard() {
   const { data: session } = useSession();
@@ -47,8 +48,10 @@ function Dashboard() {
 
       setValue("accepting", response.data.isAcceptingMessages);
     } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
       toast({
-        description: "Something went wrong",
+        description:
+          axiosError.response?.data.message ?? "Something went wrong",
         variant: "destructive",
       });
     }
@@ -65,8 +68,10 @@ function Dashboard() {
 
       setValue("accepting", !acceptMessages);
     } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
       toast({
-        description: "Something went wrong",
+        description:
+          axiosError.response?.data.message ?? "Something went wrong",
         variant: "destructive",
       });
     }

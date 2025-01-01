@@ -16,10 +16,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useDebounce } from "@uidotdev/usehooks";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import { ApiResponse } from "@/types/ApiResponse";
 
 function Signup() {
   const form = useForm<z.infer<typeof signUpSchemaValidation>>({
@@ -53,9 +54,10 @@ function Signup() {
 
       router.replace(`/verify/${username}`);
     } catch (error) {
-      console.log(error);
+      const axiosError = error as AxiosError<ApiResponse>;
       toast({
-        description: "Something went wrong",
+        description:
+          axiosError.response?.data.message ?? "Something went wrong",
       });
     }
   }
@@ -73,7 +75,10 @@ function Signup() {
 
           setUsernameValidationMessage(response.data.message);
         } catch (error) {
-          setUsernameValidationMessage("Something went wrong");
+          const axiosError = error as AxiosError<ApiResponse>;
+          setUsernameValidationMessage(
+            axiosError.response?.data.message ?? "Something went wrong"
+          );
         } finally {
           setIsChecking(false);
         }

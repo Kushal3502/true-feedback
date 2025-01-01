@@ -20,9 +20,10 @@ import {
 } from "@/components/ui/input-otp";
 import { useToast } from "@/hooks/use-toast";
 import { verifySchemaValidation } from "@/schemas/verifySchema";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { ApiResponse } from "@/types/ApiResponse";
 
 export default function InputOTPForm() {
   const { username } = useParams();
@@ -56,10 +57,10 @@ export default function InputOTPForm() {
         router.replace("/signin");
       }
     } catch (error) {
-      console.log(error);
+      const axiosError = error as AxiosError<ApiResponse>;
       toast({
-        // @ts-ignore
-        description: error.response.data.message,
+        description:
+          axiosError.response?.data.message ?? "Something went wrong",
       });
     }
   }
@@ -87,10 +88,7 @@ export default function InputOTPForm() {
                     Verification Code
                   </FormLabel>
                   <FormControl>
-                    <InputOTP
-                      maxLength={6}
-                      {...field}
-                    >
+                    <InputOTP maxLength={6} {...field}>
                       <InputOTPGroup>
                         <InputOTPSlot index={0} />
                         <InputOTPSlot index={1} />

@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
 }
 
 // method to get message accept status
-export async function GET(request: NextRequest) {
+export async function GET() {
   await connectDB();
 
   // get session

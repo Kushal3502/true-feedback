@@ -16,11 +16,12 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { messageSchemaValidation } from "@/schemas/messageSchema";
 import { useToast } from "@/hooks/use-toast";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { useState } from "react";
+import { ApiResponse } from "@/types/ApiResponse";
 
 function Message() {
   const { username } = useParams();
@@ -55,11 +56,13 @@ function Message() {
       });
 
       form.reset();
-    } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.message || "Something went wrong. Try again!";
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
+
       toast({
-        description: errorMessage,
+        description:
+          axiosError.response?.data.message ??
+          "Something went wrong. Try again!",
         variant: "destructive",
       });
     }
@@ -70,11 +73,13 @@ function Message() {
     try {
       const response = await axios.post("/api/suggest-messages");
       setMessages(response.data.questions || []);
-    } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.message || "Something went wrong. Try again!";
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
+
       toast({
-        description: errorMessage,
+        description:
+          axiosError.response?.data.message ??
+          "Something went wrong. Try again!",
         variant: "destructive",
       });
     } finally {

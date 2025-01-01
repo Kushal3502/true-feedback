@@ -18,14 +18,11 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials: any): Promise<any> {
-        const { email, password } = credentials;
-        console.log(credentials);
-
         // connect database
         await connectDB();
         try {
           const user = await UserModel.findOne({
-            email,
+            email: credentials.email,
           });
 
           if (!user) throw new Error("User doesn't exist");
@@ -33,7 +30,7 @@ export const authOptions: NextAuthOptions = {
           if (!user.isVerified) throw new Error("Please verify your account");
 
           const isPasswordCorrect = await bcrypt.compare(
-            password,
+            credentials.password,
             user.password
           );
 
@@ -42,8 +39,8 @@ export const authOptions: NextAuthOptions = {
           } else {
             throw new Error("Invalid credentials");
           }
-        } catch (error) {
-          throw new Error(error as any);
+        } catch (error: any) {
+          throw new Error(error);
         }
       },
     }),
