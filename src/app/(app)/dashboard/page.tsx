@@ -107,10 +107,12 @@ function Dashboard() {
   }
 
   useEffect(() => {
-    setShareUrl(`${window.location.origin}/u/${session?.user.username}`);
-    fetchAcceptMessageStatus();
-    fetchMessages();
-  }, []);
+    if (session?.user?.username) {
+      setShareUrl(`${window.location.origin}/u/${session.user.username}`);
+      fetchAcceptMessageStatus();
+      fetchMessages();
+    }
+  }, [session]);
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">

@@ -54,7 +54,7 @@ function Signin() {
         });
 
         if (response?.url) {
-          router.replace("/dashboard");
+          router.push("/dashboard");
         }
       }
     } catch (error) {

@@ -52,7 +52,7 @@ function Signup() {
         description: response.data.message,
       });
 
-      router.replace(`/verify/${username}`);
+      router.push(`/verify/${username}`);
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
       toast({

@@ -54,7 +54,7 @@ export default function InputOTPForm() {
           description: response.data.message,
         });
 
-        router.replace("/signin");
+        router.push("/signin");
       }
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
